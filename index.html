@@ -916,6 +916,12 @@ const prizes = [
 {amount:500000, chance:3},
 {amount:1000000, chance:1}
 ];
+/* ✅ TARUH DI SINI (GLOBAL) */
+function isPlayedToday(){
+let today = new Date().toDateString();
+let played = localStorage.getItem("playedDate");
+return played === today;
+}
 
 /* RANDOM BERDASARKAN PERSENTASE */
 function getPrize(){
@@ -936,11 +942,9 @@ function rupiah(num){
 return "Rp " + num.toLocaleString("id-ID");
 }
 
-let alreadyPlayed = false;
-
 function spinWheel(){
-if(alreadyPlayed) return alert("Sudah bermain!");
-alreadyPlayed = true;
+
+if(isPlayedToday()) return alert("Kamu sudah bermain hari ini!");
 
 markPlayed();
 
@@ -949,7 +953,6 @@ let ctx = canvas.getContext("2d");
 
 let hadiah = getPrize();
 
-// daftar hadiah (sesuaikan urutan)
 let segments = [5000,10000,25000,50000,100000,500000,1000000];
 
 let angle = 0;
@@ -993,6 +996,10 @@ rotate();
 }
 function startScratch(){
 
+if(isPlayedToday()) return alert("Kamu sudah bermain hari ini!");
+
+markPlayed();
+
 let scratched = 0;
 
 let canvas = document.getElementById("scratchCanvas");
@@ -1007,7 +1014,6 @@ ctx.fillStyle = "#000";
 ctx.font = "20px Arial";
 ctx.fillText("Rp "+hadiah.toLocaleString("id-ID"), 80, 80);
 
-// layer atas
 ctx.globalCompositeOperation = "source-over";
 ctx.fillStyle = "#999";
 ctx.fillRect(0,0,300,150);
@@ -1017,8 +1023,8 @@ canvas.addEventListener("touchmove", scratch);
 
 function scratch(e){
 let rect = canvas.getBoundingClientRect();
-let x = (e.touches?e.touches[0].clientX:e.clientX) - rect.left;
-let y = (e.touches?e.touches[0].clientY:e.clientY) - rect.top;
+let x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+let y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
 
 ctx.globalCompositeOperation = "destination-out";
 ctx.beginPath();
