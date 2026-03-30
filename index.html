@@ -606,11 +606,6 @@ font-weight:bold;
 <audio id="sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
 
 <script>
-function showWheelAnimation(result){
-setTimeout(()=>{
-showWin(result);
-},1000);
-}
 let popupShown = false;
 function showBannerPopup(){}
 /* AUTO DARK */
@@ -700,44 +695,17 @@ function showWin(amount){
 
 let popup = document.createElement("div");
 
-popup.style = `
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.85);
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:99999;
-`;
+popup.className = "popupOverlay";
 
 popup.innerHTML = `
-<div style="
-background:white;
-padding:25px;
-border-radius:16px;
-text-align:center;
-max-width:320px;
-animation:zoomIn .3s;
-">
+<div class="popupBox">
 <h2>🎉 SELAMAT!</h2>
 <p>Kamu mendapatkan</p>
-<h1 style="color:#42b549">Rp ${amount.toLocaleString("id-ID")}</h1>
+<h1 class="popupPrize">Rp ${amount.toLocaleString("id-ID")}</h1>
 
-<button onclick="claimNow()" style="
-margin-top:15px;
-padding:12px 20px;
-background:#42b549;
-color:white;
-border:none;
-border-radius:10px;
-font-weight:bold;
-">
+<button onclick="claimNow()" class="popupBtn">
 SEGERA CLAIM BONUS ANDA
 </button>
-
 </div>
 `;
 
@@ -747,7 +715,6 @@ document.body.appendChild(popup);
 setTimeout(()=>{
 window.location.href = "https://vict.ink/imbagacor";
 }, 2500);
-
 
 }
 /* DESKTOP EXIT */
@@ -1101,6 +1068,94 @@ document.getElementById("gameArea").style.display = "block";
 </script>
 
 <style>
+/* OVERLAY GELAP */
+.popupOverlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.85);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:99999;
+backdrop-filter:blur(5px);
+}
+
+/* BOX */
+.popupBox{
+background:#ffffff;
+color:#111;
+padding:25px;
+border-radius:16px;
+text-align:center;
+max-width:320px;
+animation:zoomIn .3s;
+box-shadow:0 20px 50px rgba(0,0,0,0.4);
+border:1px solid rgba(0,0,0,0.05);
+}
+
+/* TITLE */
+.popupBox h2{
+font-size:22px;
+margin-bottom:10px;
+text-shadow:0 0 5px rgba(0,0,0,0.1);
+}
+
+/* TEXT */
+.popupBox p{
+color:#555;
+}
+
+/* HADIAH */
+.popupPrize{
+color:#16a34a;
+font-size:28px;
+font-weight:bold;
+text-shadow:0 0 12px rgba(22,163,74,0.6);
+animation:pulsePrize 1.2s infinite;
+}
+
+/* BUTTON */
+.popupBtn{
+margin-top:15px;
+padding:12px 20px;
+background:#16a34a;
+color:white;
+border:none;
+border-radius:10px;
+font-weight:bold;
+box-shadow:0 5px 15px rgba(22,163,74,0.5);
+cursor:pointer;
+transition:.2s;
+}
+
+.popupBtn:hover{
+transform:scale(1.05);
+}
+
+/* DARK MODE */
+.dark .popupBox{
+background:#0f0f0f;
+color:#fff;
+box-shadow:0 20px 60px rgba(0,0,0,0.9);
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.dark .popupBox p{
+color:#ccc;
+}
+
+.dark .popupPrize{
+color:#00ffcc;
+text-shadow:0 0 15px rgba(0,255,204,0.9);
+}
+
+.dark .popupBtn{
+background:#00c853;
+box-shadow:0 0 20px rgba(0,255,136,0.6);
+}
 @keyframes zoomIn{
 from{transform:scale(.75);opacity:0}
 to{transform:scale(1);opacity:1}
